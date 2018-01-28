@@ -32,7 +32,6 @@ public class UserService extends TransactionSupportedService {
                 save(user);
             }
             depositService.open(user, durationInMonths, initialAmount);
-            update(user);
         });
     }
 
