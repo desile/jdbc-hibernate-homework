@@ -61,7 +61,7 @@ public class CurrencyDAO{
     }
 
     public Set<Currency> getAll() {
-        String query = "SELECT user_id, first_name, last_name FROM users";
+        String query = "SELECT id, full_name, short_name, update_timestamp, rate_to_dollar FROM currency";
         return new HashSet<>(jdbcTemplate.query(query, rowToCurrency));
     }
 
@@ -96,10 +96,10 @@ public class CurrencyDAO{
 
     private static final RowMapper<Currency> rowToCurrency = (resultSet, rowNum) ->
             Currency.existing(
-                    resultSet.getInt("user_id"),
+                    resultSet.getInt("id"),
                     resultSet.getString("full_name"),
                     resultSet.getString("short_name"),
-                    resultSet.getDate("update_timestamp"),
+                    resultSet.getTimestamp("update_timestamp"),
                     resultSet.getFloat("rate_to_dollar")
             );
 

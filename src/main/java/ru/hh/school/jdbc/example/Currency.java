@@ -1,6 +1,8 @@
 package ru.hh.school.jdbc.example;
 
+import java.sql.Timestamp;
 import java.util.Date;
+import java.util.Objects;
 
 public class Currency {
 
@@ -54,7 +56,9 @@ public class Currency {
     }
 
     public Date getUpdateTimestamp() {
-        return updateTimestamp;
+        Timestamp updateTime = new Timestamp(updateTimestamp.getTime());
+        updateTime.setNanos(0);
+        return updateTime;
     }
 
     public void setUpdateTimestamp(Date updateTimestamp) {
@@ -76,12 +80,11 @@ public class Currency {
 
         Currency currency = (Currency) o;
 
-        if (id != null ? !id.equals(currency.id) : currency.id != null) return false;
-        if (fullName != null ? !fullName.equals(currency.fullName) : currency.fullName != null) return false;
-        if (shortName != null ? !shortName.equals(currency.shortName) : currency.shortName != null) return false;
-        if (updateTimestamp != null ? !updateTimestamp.equals(currency.updateTimestamp) : currency.updateTimestamp != null)
-            return false;
-        return rateToDollar != null ? rateToDollar.equals(currency.rateToDollar) : currency.rateToDollar == null;
+        return Objects.equals(id, currency.id)
+                && Objects.equals(fullName, currency.fullName)
+                && Objects.equals(shortName, currency.shortName)
+                && Objects.equals(getUpdateTimestamp(), currency.getUpdateTimestamp())
+                && Objects.equals(rateToDollar, currency.rateToDollar);
     }
 
     @Override
