@@ -19,10 +19,10 @@ public class Deposit {
     @JoinColumn(name = "owner_id", nullable = false)
     private User owner;
 
-    @Column(name = "open_timestamp")
+    @Column(name = "open_timestamp", nullable = false, updatable = false)
     private Date openTimestamp;
 
-    @Column(name = "expiration_timestamp")
+    @Column(name = "expiration_timestamp", nullable = false)
     private Date expirationTimestamp;
 
     @Column(name = "amount")
@@ -35,9 +35,9 @@ public class Deposit {
     private Boolean closed;
 
 
-    public Deposit(User owner, Date openTimestamp, Date expirationTimestamp, Double amount, Double interest){
+    public Deposit(User owner, Date expirationTimestamp, Double amount, Double interest){
         this.owner = owner;
-        this.openTimestamp = openTimestamp;
+        this.openTimestamp = new Date();
         this.expirationTimestamp = expirationTimestamp;
         this.amount = amount;
         this.interest = interest;
@@ -47,12 +47,8 @@ public class Deposit {
 
     }
 
-    public Integer getId() {
+    public Integer id() {
         return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
     }
 
     public User getOwner() {
@@ -65,10 +61,6 @@ public class Deposit {
 
     public Date getOpenTimestamp() {
         return openTimestamp;
-    }
-
-    public void setOpenTimestamp(Date openTimestamp) {
-        this.openTimestamp = openTimestamp;
     }
 
     public Date getExpirationTimestamp() {

@@ -3,6 +3,7 @@ package ru.hh.school.users;
 import ru.hh.school.deposits.Deposit;
 
 import javax.persistence.*;
+import java.sql.Timestamp;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Objects;
@@ -17,10 +18,10 @@ public class User {
     @Column(name = "id")
     private Integer id;
 
-    @Column(name = "first_name")
+    @Column(name = "first_name", nullable = false)
     private String firstName;
 
-    @Column(name = "last_name")
+    @Column(name = "last_name", nullable = false)
     private String lastName;
 
     @Column(name = "creation_timestamp", nullable = false, updatable = false)
@@ -49,9 +50,7 @@ public class User {
         return id;
     }
 
-    // no setId, Hibernate uses reflection to set field
-
-    public String firstName() {
+    public String getFirstName() {
         return firstName;
     }
 
@@ -59,7 +58,7 @@ public class User {
         this.firstName = firstName;
     }
 
-    public String lastName() {
+    public String getLastName() {
         return lastName;
     }
 
@@ -67,8 +66,8 @@ public class User {
         this.lastName = lastName;
     }
 
-    public Date creationDate() {
-        return creationDate;
+    public Date getCreationDate() {
+        return new Timestamp(creationDate.getTime());
     }
 
     public Set<Deposit> getDeposits() {
@@ -87,8 +86,6 @@ public class User {
         this.deleted = deleted;
     }
 
-    // no setCreationDate
-
     @Override
     public boolean equals(Object that) {
         if (this == that) return true;
@@ -96,15 +93,15 @@ public class User {
 
         User thatUser = (User) that;
         return Objects.equals(id, thatUser.id)
-                && Objects.equals(creationDate, thatUser.creationDate)
+                && Objects.equals(getCreationDate(), thatUser.getCreationDate())
                 && Objects.equals(firstName, thatUser.firstName)
-                && Objects.equals(lastName, thatUser.lastName);
-                //&& Objects.equals(deposits, thatUser.deposits);
+                && Objects.equals(lastName, thatUser.lastName)
+                && Objects.equals(deposits, thatUser.deposits);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, creationDate);
+        return id.hashCode();
     }
 
     @Override

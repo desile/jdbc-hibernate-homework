@@ -29,8 +29,9 @@ public class DepositService extends TransactionSupportedService {
             Calendar expirationCalendar = Calendar.getInstance();
             expirationCalendar.setTime(new Date());
             expirationCalendar.add(Calendar.MONTH, durationInMonths);
-            Deposit deposit = new Deposit(user, new Date(), expirationCalendar.getTime(), initialAmount, interest);
+            Deposit deposit = new Deposit(user, expirationCalendar.getTime(), initialAmount, interest);
             save(deposit);
+            user.getDeposits().add(deposit);
             return deposit;
         });
     }
@@ -76,14 +77,7 @@ public class DepositService extends TransactionSupportedService {
     public void close(Deposit deposit) {
         inTransaction(() -> {
             if (deposit.getAmount() > 0.01){
-                Optional<Deposit> optionalDepositToSaveBalance = deposit.getOwner().getDeposits().stream().filter(d -> !deposit.equals(d)).findAny();
-                if(optionalDepositToSaveBalance.isPresent()){
-                    Deposit depositToSaveBalance = optionalDepositToSaveBalance.get();
-                    putMoney(depositToSaveBalance, deposit.getAmount());
-                    deposit.setAmount(0D);
-                } else {
-                    throw new IllegalArgumentException("deposit can't be closed! take money from deposit or create new one");
-                }
+                deposit.setAmount(0D);
             }
             deposit.setClosed(true);
             update(deposit);
@@ -91,9 +85,7 @@ public class DepositService extends TransactionSupportedService {
     }
 
     public void delete(Deposit deposit) {
-        inTransaction(() -> {
-            depositDAO.delete(deposit);
-        });
+        inTransaction(() -> depositDAO.delete(deposit));
     }
 
 
