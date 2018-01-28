@@ -23,7 +23,7 @@ public class DepositService extends TransactionSupportedService {
         inTransaction(() -> depositDAO.save(deposit));
     }
 
-    public Deposit open(User user, int durationInMonths, double initialAmount) {
+    public Deposit open(User user, double initialAmount, int durationInMonths) {
         return inTransaction(() -> {
             double interest = calculateInterest(durationInMonths, initialAmount);
             Calendar expirationCalendar = Calendar.getInstance();

@@ -49,9 +49,9 @@ public class Main {
             System.out.println("persisting " + headHunterz);
             userService.save(headHunterz);
 
-            depositService.open(headHunterz, 10, 1000);
-            depositService.open(headHunterz, 20, 2000);
-            depositService.open(headHunterz, 30, 3000);
+            depositService.open(headHunterz, 1000, 10);
+            depositService.open(headHunterz, 2000, 20);
+            depositService.open(headHunterz, 3000, 30);
 
             System.out.println(userService.getSummaryMoneyAmount(headHunterz));
             userService.delete(headHunterz);

@@ -31,7 +31,7 @@ public class UserService extends TransactionSupportedService {
             if(user.id() == null){
                 save(user);
             }
-            depositService.open(user, durationInMonths, initialAmount);
+            depositService.open(user, initialAmount, durationInMonths);
         });
     }
 
