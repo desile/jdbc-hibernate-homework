@@ -42,7 +42,6 @@ public class Main {
 
 
             // Hibernate
-
             DepositService depositService = new DepositService(sessionFactory, new DepositDAO(sessionFactory));
             UserService userService = new UserService(sessionFactory, new UserDAO(sessionFactory), depositService);
             User headHunterz = new User("Head", "Hunterz");

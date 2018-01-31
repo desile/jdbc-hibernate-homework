@@ -113,9 +113,16 @@ public class UserServiceTest extends HibernateTestBase {
     @Test
     public void saveWithDepositShouldSaveUserIfItIsNotExisted(){
         User user1 = new User("first name 1", "last name 1");
-        userService.saveWithDeposit(user1, 12,2000);
+        userService.saveWithDeposit(user1, 2000,12);
 
         assertNotNull(user1.id());
+    }
+
+    @Test
+    public void saveWithDepositShouldOpenDepositForUser(){
+        User user1 = new User("first name 1", "last name 1");
+        userService.saveWithDeposit(user1, 2000,12);
+        assertEquals(user1.getDeposits().size(), 1);
     }
 
     @Test
@@ -132,14 +139,15 @@ public class UserServiceTest extends HibernateTestBase {
     public void deleteShouldCloseAndAnnulAllDeposits(){
         User user1 = new User("first name 1", "last name 1");
         userService.save(user1);
-        Deposit depost1 = depositService.open(user1, 3000, 1);
-        Deposit depost2 = depositService.open(user1, 2000, 1);
+        userService.saveWithDeposit(user1, 3000, 1);
+        userService.saveWithDeposit(user1, 2000, 1);
 
         userService.delete(user1);
-        assertEquals(depost1.getAmount(), 0D);
-        assertEquals(depost2.getAmount(), 0D);
-        assertTrue(depost1.isClosed());
-        assertTrue(depost2.isClosed());
+
+        for(Deposit userDeposit : user1.getDeposits()){
+            assertEquals(userDeposit.getAmount(), 0D);
+            assertTrue(userDeposit.isClosed());
+        }
     }
 
 }

@@ -25,17 +25,17 @@ public class Deposit {
     @Column(name = "expiration_timestamp", nullable = false)
     private Date expirationTimestamp;
 
-    @Column(name = "amount")
-    private Double amount;
+    @Column(name = "amount", nullable = false)
+    private double amount;
 
-    @Column(name = "interest")
-    private Double interest;
+    @Column(name = "interest", nullable = false)
+    private double interest;
 
-    @Column(name = "closed")
-    private Boolean closed;
+    @Column(name = "closed", nullable = false)
+    private boolean closed;
 
 
-    public Deposit(User owner, Date expirationTimestamp, Double amount, Double interest){
+    public Deposit(User owner, Date expirationTimestamp, double amount, double interest){
         this.owner = owner;
         this.openTimestamp = new Date();
         this.expirationTimestamp = expirationTimestamp;
@@ -71,27 +71,27 @@ public class Deposit {
         this.expirationTimestamp = expirationTimestamp;
     }
 
-    public Double getAmount() {
+    public double getAmount() {
         return amount;
     }
 
-    public void setAmount(Double amount) {
+    public void setAmount(double amount) {
         this.amount = amount;
     }
 
-    public Double getInterest() {
+    public double getInterest() {
         return interest;
     }
 
-    public void setInterest(Double interest) {
+    public void setInterest(double interest) {
         this.interest = interest;
     }
 
-    public Boolean isClosed() {
+    public boolean isClosed() {
         return closed;
     }
 
-    public void setClosed(Boolean closed) {
+    public void setClosed(boolean closed) {
         this.closed = closed;
     }
 
@@ -111,11 +111,6 @@ public class Deposit {
     }
 
     @Override
-    public int hashCode() {
-        return id.hashCode();
-    }
-
-    @Override
     public String toString() {
         return "Deposit{" +
                 "\n\t id=" + id +
@@ -126,5 +121,10 @@ public class Deposit {
                 "\n\t, interest=" + interest +
                 "\n\t, closed=" + closed +
                 '}';
+    }
+
+    @Override
+    public int hashCode() {
+        return id != null ? id.hashCode() : 0;
     }
 }

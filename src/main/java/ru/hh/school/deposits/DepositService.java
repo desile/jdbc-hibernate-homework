@@ -1,12 +1,12 @@
 package ru.hh.school.deposits;
 
 import org.hibernate.SessionFactory;
-import org.hibernate.Transaction;
 import ru.hh.school.TransactionSupportedService;
 import ru.hh.school.users.User;
-
-import java.util.*;
-import java.util.function.Supplier;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Optional;
+import java.util.Set;
 
 import static java.util.Objects.requireNonNull;
 
@@ -24,16 +24,13 @@ public class DepositService extends TransactionSupportedService {
     }
 
     public Deposit open(User user, double initialAmount, int durationInMonths) {
-        return inTransaction(() -> {
-            double interest = calculateInterest(durationInMonths, initialAmount);
-            Calendar expirationCalendar = Calendar.getInstance();
-            expirationCalendar.setTime(new Date());
-            expirationCalendar.add(Calendar.MONTH, durationInMonths);
-            Deposit deposit = new Deposit(user, expirationCalendar.getTime(), initialAmount, interest);
-            save(deposit);
-            user.getDeposits().add(deposit);
-            return deposit;
-        });
+        double interest = calculateInterest(durationInMonths, initialAmount);
+        Calendar expirationCalendar = Calendar.getInstance();
+        expirationCalendar.setTime(new Date());
+        expirationCalendar.add(Calendar.MONTH, durationInMonths);
+        Deposit deposit = new Deposit(user, expirationCalendar.getTime(), initialAmount, interest);
+        save(deposit);
+        return deposit;
     }
 
     public Deposit get(int depositId) {
