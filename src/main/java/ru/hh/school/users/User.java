@@ -32,7 +32,7 @@ public class User {
     private Set<Deposit> deposits;
 
     @Column(name = "deleted", nullable = false)
-    private Boolean deleted;
+    private boolean deleted;
 
     public User(String firstName, String lastName) {
         this.firstName = firstName;
